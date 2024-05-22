@@ -26,7 +26,7 @@
 
 `5-12:` [Practice task-1](#5-12-practice-task-1)
 
-## # 5-0 Introduction
+## 5-0 Introduction
 
 #### What we are going to learn ?
 
