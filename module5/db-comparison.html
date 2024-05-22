@@ -12,6 +12,7 @@
         grid-template-columns: 1fr 1fr;
         column-gap: 50px;
         font-size: 20px;
+        position: relative;
       }
       .rdbms {
         border: 3px solid red;
@@ -54,9 +55,37 @@
         border: 3px solid green;
         padding: 30px;
       }
+      .line1 {
+        width: 40%;
+        height: 1px;
+        border-bottom: 4px dashed red;
+        position: absolute;
+        top: 201px;
+        left: 451px;
+      }
+      .line2 {
+        width: 40%;
+        height: 1px;
+        border-bottom: 4px dashed green;
+        position: absolute;
+        top: 300px;
+        left: 451px;
+      }
+      .line3 {
+        width: 40%;
+        height: 1px;
+        border-bottom: 4px dashed blue;
+        position: absolute;
+        top: 390px;
+        left: 451px;
+      }
     </style>
 
     <div class="database-box">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+
       <div class="mongodb">
         <div>RDBMS</div>
         <div class="database">
