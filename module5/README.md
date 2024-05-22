@@ -92,7 +92,7 @@
 ---
 
 <div>
-    <img src="../imges/db-comparison.png" width="350" title="hover text">
+    <img width="100%"  src="../imges/db-comparison.png" width="350" title="hover text">
 </div>
 
 ---
