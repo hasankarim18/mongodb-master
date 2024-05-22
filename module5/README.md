@@ -89,96 +89,13 @@
     
 </table>
 
-<style>
-    .database-box{
-        display:grid; 
-        grid-template-columns:1fr 1fr;
-        column-gap:50px
+---
 
-    }
-    .rdbms{
-        border:3px solid red;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        padding:20px;
-    }
-
-    .mongodb{
-        border:3px solid red;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        padding:20px;
-        flex-direction:column;
-        
-    }
-    .database{
-        border-top:1px solid yellow;
-        border:3px solid yellow;
-        width:100%;
-        text-align:center;
-        
-
-    }
-    .zero{
-        padding:20px;
-    }
-    .one{
-        border:3px solid green;
-        padding:30px;
-    }
-    .two{
-        border:3px solid orange;
-        padding:30px;
-    }
-
-    .three {
-        border:3px solid blue;
-        padding:30px;
-    }
-    .four {
-         border:3px solid green;
-        padding:30px;
-    }
-</style>
-
-<div class="database-box">
-<div class="mongodb"> 
-    <div>RDBMS</div>
-    <div class="database">
-        <div class="zero">Database</div>
-        <div class="one">
-            <div class="two"> 
-                <p>Table</p>
-                <div class="three">
-                    <p>Rows</p>
-                    <div class="four"><p>Columns</p></div>
-                </div>
-             </div>
-        </div>
-    </div>
-
- </div>
- <!-- Mongodb -->
-<div class="mongodb"> 
-    <div>MongoDb</div>
-    <div class="database">
-        <div class="zero">Database</div>
-        <div class="one">
-            <div class="two"> 
-                <p>Collections</p>
-                <div class="three">
-                    <p>Documents</p>
-                    <div class="four"><p>Fields</p></div>
-                </div>
-             </div>
-        </div>
-    </div>
-
- </div>
-
+<div>
+    <img src="../imges/db-comparison.png" width="350" title="hover text">
 </div>
+
+---
 
 - In simple terms
 <table>
