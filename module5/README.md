@@ -152,9 +152,88 @@
 
 ## 5-1-A Install MongoDB compass and No SQL Booster Windows
 
+- Install Mongodb shell
+- go to c --> Program Files --> Mongodb --> Server --> 7.0 --> bin
+
+- copy the path -- C:\Program Files\MongoDB\Server\7.0\bin
+
+- go to serach box
+
+- write "edit environment variable"
+
+- dobule click on "path"
+
+- click new
+
+- paste the path (C:\Program Files\MongoDB\Server\7.0\bin)
+
+- `check` version of mongodb shell version
+
+- `mongod` --version
+
+- `starting command`
+  - mongosh
+  - Write command as usuas on your terminal and use
+  - You will not get suggestions here
+
 ## 5-1-B Install MongoDB compass and No SQL Booster Mac Linux
 
+- Only for mac users
+
 ## 5-2 insert insertOne find findOne field filtering project
+
+#### <u> Difference between </u> db.getCollection('test') and db.test
+
+<u>For Example: </u>
+
+- db.getCollection('test').find()
+  <br> or <br>
+- db.test.find()
+
+both `db.getCollection('test')` and `db.test.find()` can be used for `CRUD` operation but
+
+- `db.getCollection('test')` can used in `Dynamic Collection Names` when the collection name is stored in a variable or needs to be constructed dynamically.
+
+  - অর্থাৎ daynamic query এর ক্ষেত্রে ব্যাবহৃত হবে
+
+```
+let collectionName = "test";
+db.getCollection(collectionName).find();
+```
+
+- `db.test.find():` is for `Static Collection Names` Use db.test when the collection name is known and fixed at the time of writing the query.
+
+```
+db.test.find();
+```
+
+- এক্ষেত্রে collection name আগে থেকে জানা অর্থৎ fixed/static, কোন dynamic query এর ক্ষেত্রে ব্যবহৃত হবেনা ।
+
+- [5-2 insert](#5-2-insert)
+- [5-2 insertOne](#5-2-insertone)
+- [5-2 find](#5-2-find)
+- [5-2 findOne](#5-2-findone)
+- [5-2 field](#5-2-field)
+- [5-2 filtering](#5-2-filtering)
+- [5-2 project ](#5-2-project)
+
+#### 5-2 insert
+
+#### 5-2 insertOne
+
+#### 5-2 find
+
+#### 5-2 findOne
+
+#### 5-2 field
+
+#### 5-2 filtering
+
+#### 5-2 project
+
+---
+
+---
 
 ## 5-3 $eq $neq $gt $gte $lte
 
@@ -193,6 +272,14 @@
         </td>
         <td>
             use databaseName (use practice)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Show all Database
+        </td>
+        <td>
+            show database
         </td>
     </tr>
     <tr>
