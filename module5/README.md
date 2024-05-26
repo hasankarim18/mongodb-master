@@ -315,15 +315,15 @@ N.b - `project` শুধু মাত্র `find` এর জন্য ব্�
        <ul>
          <li> goto Sidebar --> Reference --> Operators -->Query and Projection Operators </li>        
          <ul>
-            <li>Comparison Operators --> $eq $gt $gte $in $lt $lte $ne $nin </li>
-            <li>Logical query operators --> $and $not $nor $or </li>
-            <li>Element Query Operators --> $exists $type </li>
-            <li>Evaluation Query Operators --> $expr $jsonSchema $mod $regex $ text $where</li>
-            <li>Geospatial Query Operators </li>
-            <li>Array Query Operators </li>
-            <li>Bitwise Query Operators </li>
-            <li>Projection  Operators </li>
-            <li>Miscellaneous Query Operators </li>
+            <li>Comparison Operators --> $eq, $gt, $gte, $in, $lt, $lte, $ne, $nin </li>
+            <li>Logical query operators --> $and, $not, $nor, $or, </li>
+            <li>Element Query Operators --> $exists, $type, </li>
+            <li>Evaluation Query Operators --> $expr, $jsonSchema, $mod, $regex, $text, $where</li>
+            <li>Geospatial Query Operators --> $geoWithin, $center, $centerSphere, $box, $polygon, $geoIntersects, $geometry, $near, $minDistance, $maxDistance, $nearSphere, $geoWithinSphere</li>
+            <li>Array Query Operators --> $all, $elemMatch(query), $size </li>
+            <li>Bitwise Query Operators --> $bitsAllClear, $bitsAllSet, $bitsanyClear, $bitsAnySet </li>
+            <li>Projection  Operators --> $(projection), $elemMatch(projection), $slice(projection), </li>
+            <li>Miscellaneous Query Operators --> $comment, $rand, $natural </li>
          </ul>
        </ul>
    </li>
