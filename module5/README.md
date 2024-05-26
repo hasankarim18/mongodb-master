@@ -213,23 +213,92 @@ db.test.find();
 - [5-2 insertOne](#5-2-insertone)
 - [5-2 find](#5-2-find)
 - [5-2 findOne](#5-2-findone)
-- [5-2 field](#5-2-field)
-- [5-2 filtering](#5-2-filtering)
+- [5-2 field filtering](#5-2-field-filtering)
 - [5-2 project ](#5-2-project)
 
 #### 5-2 insert
+
+- shell command
+  - type --> use databaseName
+  - type --> db.collectionName.insertOne()
+  - type --> db.collectionName.insertMany()
+
+```
+    db.user.insertOne({name:"user one"})
+```
+
+- in the above code db --> indicates which database you are using
+- db.user ---> `user` is the collection under database
+- db.user.insertMany --> is the
+
+`insertMany` <br>
+
+- Aray of object parameter হিসাবে দিতে হবে
 
 #### 5-2 insertOne
 
 #### 5-2 find
 
+`db.practice.find({age:17})`
+
+- এর মানে হল db-->practice Collection --> document --> field
+- practice collection এর ভিতরে document {} --> একটা field হল ‍`age`
+- অর্থাৎ collection এর সকল field খুজবে এবং যেসব document {} এ age নামক field পাবে সেই সব document কে output দেখাবে ।
+- match হওয়া সকল document দেখাবে
+
 #### 5-2 findOne
 
-#### 5-2 field
+`db.practice.findOne({age:17})`
 
-#### 5-2 filtering
+- How MongoDB Selects the Document
+
+  - Natural Order: MongoDB typically returns documents in the natural order, which is the order in which they were inserted into the collection. However, this order can change due to updates, deletions, or other operations that may affect the physical storage of documents.
+
+  - Arbitrary Selection: If there are multiple documents that match the query criteria, and no sort order is specified, MongoDB may return any one of these documents. This means the result can be somewhat arbitrary when using findOne.
+
+#### 5-2 field filtering
+
+- কি কি field filter out করে নিয়ে আসবা ।
+
+- যদি document এর সব data দরকার না হয় শুধু মাত্র কিছু field এর data দরকার হয় তাহলে আমরা field filtering করতে পারি
+
+```
+db.practice.find({gender:"Male"}, {name:1, gender:1, age:1})
+```
+
+- এখানে find এর ভিতরে second parameter হিসাবে field filtering দেয়া হয়েছে
+- এই query দ্বারা শুধুমাত্র name, gender, age এর data আসবে অন্য field এর data আসবেনা ।
+
+```
+{
+	"_id" : ObjectId("6406ad63fc13ae5a40000066"),
+	"name" : {
+		"firstName" : "Otto",
+		"lastName" : "Mirfin"
+	},
+	"gender" : "Male",
+	"age" : 12
+},
+
+- আবার field filtering এ 1 এর জায়গায় 0 দিলে সেই গুলো বাদে অন্য গুলো আসবে ।
+
+```
+
+```
+db.practice.find({gender:"Male"}, {name:0, gender:0, age:0})
+```
+
+- উপরের query তে সেই সব document আসবে যাদের gender:"Male" এবং সেখানে name, gender, age এই ৩ field বাদে অন্য সকল field এর value থাকবে ।
 
 #### 5-2 project
+
+- এই field filtering আমরা chaining করে করতে পারি `project` এর মধ্যমে
+
+```
+db.practice.find({gender:"Male"}).project({name:1, gender:1})
+```
+
+N.b - `project` শুধু মাত্র `find` এর জন্য ব্যাবহার করা যায় `findOne` এর ক্ষেত্রে `project` support করেনা । সেক্ষেত্রে আগের নিয়মে second parameter দিয়ে ব্যাবহার করতে হবে
 
 ---
 
