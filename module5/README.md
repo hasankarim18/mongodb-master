@@ -6,6 +6,8 @@
 
 `5-2:` [Insert, InsertOne, find, findOne, field, filtering, project](#5-2-insert-insertone-find-findone-field-filtering-project)
 
+`Special` [`MongoDb Operators`](#mongodb-operators)
+
 `5-3:` [$eq, $neq, $gt, $gte, $lte](#5-3-eq-neq-gt-gte-lte)
 
 `5-4:` [$in, $nin, implicit and condition](#5-4-in-nin-implicit-and-condition)
@@ -303,6 +305,37 @@ N.b - `project` শুধু মাত্র `find` এর জন্য ব্�
 ---
 
 ---
+
+## Mongodb Operators
+
+- <a target="_blank" href="https://www.mongodb.com/docs/manual/reference/operator/">Mongodb operators documents Link</a>
+<ul>
+   <li>
+       Query and Projection Operators
+       <ul>
+         <li> goto Sidebar --> Reference --> Operators -->Query and Projection Operators </li>        
+         <ul>
+            <li>Comparison Operators --> $eq $gt $gte $in $lt $lte $ne $nin </li>
+            <li>Logical query operators --> $and $not $nor $or </li>
+            <li>Element Query Operators --> $exists $type </li>
+            <li>Evaluation Query Operators --> $expr $jsonSchema $mod $regex $ text $where</li>
+            <li>Geospatial Query Operators </li>
+            <li>Array Query Operators </li>
+            <li>Bitwise Query Operators </li>
+            <li>Projection  Operators </li>
+            <li>Miscellaneous Query Operators </li>
+         </ul>
+       </ul>
+   </li>
+   <li>Update Operators</li>
+   <li>Aggregation Stages</li>
+   <li>Aggregation Operators</li>
+</ul>
+- Operators Resources
+  -Query and Projection Operators
+  - Goto Sidebar --> Reference --> Operators
+    - Operators
+- Update Operators
 
 ## 5-3 $eq $neq $gt $gte $lte
 
