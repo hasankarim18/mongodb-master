@@ -337,9 +337,157 @@ N.b - `project` শুধু মাত্র `find` এর জন্য ব্�
     - Operators
 - Update Operators
 
-## 5-3 $eq $neq $gt $gte $lte
+#### `Comparison Oeprator below 5-3 and 5-4`
+
+### Thumb rule`: যখন কোন operator আনব তখন দুই পাসে second bracket দিয়ে দিব
+
+## 5-3 $eq $ne $gt $gte $lte
+
+- `$eq = equal`
+- `$ne = not equal`
+- `$gt = greater than`
+- `$gte = greater than or equal to`
+- `$lt = less than`
+- `$lte = less than or equal to`
+
+### $eq === equal to
+
+- $eq has following form
+
+```
+{<field>: {$eq:<value>}}
+```
+
+- Example
+
+```
+db.practice.find({gender:{$eq:"Male"}})
+// or
+db.practice.find({age:{$eq:12}})
+```
+
+- প্রথমটায় যাদের gender শুধু মাত্র male তাদের কে খুজে নিয়ে আসবে
+- age equal to 12
+
+```
+db.practice.find({age:{$gt:12}})  // greater than 12
+db.practice.find({age:{$gte:12}}) // greater than or equal to 12
+db.practice.find({age:{$lt:12}}) // less than 12
+db.practice.find({age:{$lte:12}}) // less than or equal to 12
+
+```
+
+### $ne == not euqul
+
+```
+db.practice.find({age:{$ne:12}}).sort({age:-1}) // বড় থেকে ছো্ট
+db.practice.find({age:{$ne:12}}).sort({age:1}) // ছোট থেকে বড়
+```
+
+- সকল collection search করবে এবং যেসব document এর ভিতরে age নামক field আছে তাদের যাদের যাদের value 12 নয় তাদেরকে দেখাবে ।
+
+- sort এর মাধ্যমে data sort করা যায়, এখানে বয়স এর উপর ভিত্তি করে sort করা হয়েছে ।
 
 ## 5-4 $in, $nin, implicit and condition
+
+- $in operator selects the `documents` where the value of a field equals any value in the specified array.
+
+```
+{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+```
+
+- $in এর ভিতরে field value array আকারে দেয়া হয়,
+- field এর যেসব value গুলো মিলবে সেসব document কে query করে নিয়ে আসবে ।
+
+```
+db.practice.find({age:{$in:[12,34,40,30]}}).project({name:1, age:1})
+```
+
+- Practice collection [{}, {}, {}], যেসব docment {} আছে তাদের ভিতরে age field এর ভিতর যেসব value 12,34,40,30 এই 4 টি সংখার যেকোন একটির সাথে মিলে যাবে সেই সব document গুলোকে show করবে ।
+- অর্থাৎ যে document এর সাথে মিলবে সেই document কেই দিবে
+
+### implicit and condition
+
+#### implicit and
+
+- `implicit (অন্তর্নিহিত) `: it is not explicitly defined by the system but happen automatically by the system is called implicit.
+- অর্থাৎ এমন একটা বিহেভিয়র যা mongodb এর নিজস্ব সিস্টিম দ্বারা সয়ংক্রিয় ভাবে ঘটে । অর্তাৎ default behaviour.
+
+- `implicit and` comma এর মাধ্যমে লেখা হয় for example, আমরা ১৮ থেকে ৩০ বছর বয়স যাদের document গুলো দেখতে চাই ।
+
+```
+db.practice.find({age:{$gt:18, $lt:30}}, {name:1,age:1}).sort({age:1})
+```
+
+- উপরে আমরা query `{age:{$gt:18, $lt:30}}` লিখছি, এই কমা দিয়ে ‍ সেপারেট করা কেই আমরা `inplicit and` বলতেছি । কেননা কমা হল এখানে একটা default mongodb behaviour.
+- কমা দিয়ে `and` করতে পারতেছি
+
+#### `implicity and` in `filed` query
+
+```
+
+
+db.practice.find({gender:"Male",age:18}) // ----১
+
+db.practice.find({gender:"Male",age:{$gt:18}}) // ---- ২
+
+db.practice.find({gender:"Male",age:{$gt:18, $lt:30}}) // ----৩
+
+db.practice.find({gender:"Female",age:{$gt:18, $lt:30}}) // ----৪
+
+```
+
+১. সেই সব document যাদের gender = Male এবং বয়স ১৮
+
+২. সেই সব document যাদের gender = Male এবং বয়স ১৮ এর বেশি
+
+৩. সেই সব document যাদের gender = Male এবং বয়স ১৮ এর বেশি এবং ৩০ এর কম
+
+৪. সেই সব document যাদের gender = `Female` এবং বয়স ১৮ এর বেশি এবং ৩০ এর কম
+
+- একটা query example
+
+```
+// 1
+db.practice.find(
+    {
+        gender:"Male",
+        age: { $gt: 18, $lt: 30 }
+    }, { name: 1, age: 1, gender: 1 }
+)
+    .sort({ age: 1 })
+```
+
+```
+/// 2
+db.practice.find(
+    {
+        gender: { $in: ["Male", "Female"] },
+        age: { $gt: 18, $lt: 30 }
+    }, { name: 1, age: 1, gender: 1 }
+)
+    .sort({ age: 1 })
+```
+
+---
+
+1. {gender:"Male",age:{$gt:18, $lt:30}} == gender:Male ,বয়স ১৮ থেকে ৩০ <br>
+   a. find এর ২য় parameter {name:1,age:1, gender:1} == query তে name,age, gender দেখাতে হবে <br>
+   b. sort, age দিয়ে করা হয়েছে asscending order (ছোট থেকে বড় )
+
+2. {gender:{$in:["Male", "Female"]},age:{$gt:18, $lt:30}} == gender:Male এবং Female ,বয়স ১৮ থেকে ৩০ <br>
+
+```
+db.practice.find(
+    {
+        gender:"Male",                          // gender Male হতে হবে
+        age: {$nin:[18,20,22,24,26,28] },       // age 18,20,22,24,26,28 বাদে অন্য হতে হবে
+        interests:{$in:['Cooking', "Gaming"]}   // interest Cooking অথবা Gaming যেকোন একটা হতে হবে
+    },
+     { name: 1, age: 1, gender: 1,interests:1 }  // find এর ২য় parameter -- কি কি দেখাবে
+)
+    .sort({ age: 1 })                            // age, assencding order এ sort করবে
+```
 
 ## 5-5 $and $or implicit-vs-explicit
 
