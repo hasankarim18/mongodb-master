@@ -740,6 +740,33 @@ db.practice.find({
 
 - ⬆️ will show all the documents in collection practice which have a `friend field` and this `field` is an `array`
 
+# `$size`
+
+`db.collection.find( { field: { $size: 2 } } );`
+
+- Only for `array`
+- The `$size` operator matches any array with the number of elements specified by the argument.
+
+- ⬇️ এমন document সমূহ দেখাও যাদের friend array তে ৩ টা element আছে
+
+```
+db.practice.find({
+    friends:{$size:3}
+}).project({
+    friends:1
+})
+```
+
+- ⬇️ এমন document সমূহ দেখাও যাদের friend array তে 0 টা element আছে অর্থাৎ ‍friend field টা empty array
+
+```
+db.practice.find({
+    friends:{$size:0}     // শুধুমাত্র সেই document কেই select করবে যার friend:[]
+}).project({              // অর্থাৎ empty array
+    friends:1
+})
+```
+
 ## 5-7 $all $elemMatch
 
 ## 5-8 $set $addToSet $push
@@ -827,6 +854,10 @@ db.practice.find({
   - mongosh
   - Write command as usuas on your terminal and use
   - You will not get suggestions here
+
+```
+
+```
 
 ```
 
