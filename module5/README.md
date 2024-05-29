@@ -14,7 +14,7 @@
 
 `5-5:` [$and, $or, implicit vs explicit](#5-5-and-or-implicit-vs-explicit)
 
-`5-6:` [$exists, $type, $size](#5-6-exists-type-size)
+`5-6:` [$exists, $type, $size / Element query operator](#5-6-exists-type-size)
 
 `5-7:` [$all, $elemMatch](#5-7-all-elemmatch)
 
@@ -635,7 +635,110 @@ db.practice.find(
 
 -
 
+# `$not`
+
+`{ field: { $not: { <operator-expression> } } }` // array হবেনা
+
+- performs a logical `NOT` operation on the `specified <operator-expression>` and selects the documents that do not match the <operator-expression>. This includes documents that do not contain the `field`
+
+```
+db.inventory.find( { price: { $not: { $gt: 1.99 } } } )
+```
+
+- This query will select all documents in the `inventory` collection where:
+  - The `price` field value is less than or equal to 1.99 or
+  - The `price` does not exists
+
+# `$nor`
+
+- `$nor` performs a logical `NOR` operation on an array of one or more query expression and selects the documents that fail all the query expression in the array.
+  `{ $nor: [ { <expression1> }, { <expression2> }, ...  { <expressionN> } ] }`
+- For Example
+
+```
+db.inventory.find( { $nor: [ { price: 1.99 }, { sale: true } ]  } )
+```
+
+#### This query will return all document that:
+
+- contain the `price` field whose value `is not equal to 1.99` and contain `sale` field value `is not equal to true` or
+
+- Contain the `price` field whose value `is not equal to 1.99` but do not containthe `scale` field or
+
+- do not contain the `price` field but not contain the `sale` field whose value is not equal to `true` or
+
+- do not contain the `price` field and do not contain the sale
+
 ## 5-6 $exists, $type, $size
+
+# Element query operator
+
+- element query return data based on field existence or data types
+- এমন কয়েরি যা document এ কোন field আছে কিনা তা খুজে বের করা
+- অর্থাৎ কোন একটা field docuement এ exists করে কিনা তা দেখাবে
+
+# `$exists`
+
+- This operator matches documents that contain or do not contain a specific field
+- `Syntax`: `{ field: { $exists: <boolean> } }`
+
+- when `<boolean>` is true,$exists matches the document that contain the field, including documents where the field value is `null`.
+
+- If `<boolean>` is false, the query returns only the documents that do not contain the field.
+
+```
+db.practice.find({age:{$exists:false}})  // - সেসব document গুলোকে দেখোবে যেখানে `age` field টা নাই
+
+
+db.practice.find({age:{$exists:true}})  // - সেসব document গুলোকে দেখোবে যেখানে `age` field টা আছে
+```
+
+- যদি field না থাকে তাহলে কোন result show করবে না 0 result দিবে
+
+```
+db.practice.find({unknown:{$exists:true}}) // 0 result return করবে কেননা unknown নামের কোন field নাই
+```
+
+- just বলে দিবে field টা আছে নাকি নাই থাকলে result show করবে না থাকলে result 0 দেখাবে ‍/ show করবেনা
+
+# `$type`
+
+`{ field: { $type: <BSON type> } }`
+<br> it cal also take array as input<br>
+
+`{ field: { $type: [ <BSON type1> , <BSON type2>, ... ] } }`
+
+- আমরা ইচ্ছা করলে type search করতে পারব
+- selects documents where the value of the field is an instance of the specifie <a target="_blank" href="https://www.mongodb.com/docs/manual/reference/operator/query/type/#std-label-document-type-available-types">BSON Type </a>.
+
+```
+db.practice.find({
+    $and:[
+        {company:{$exists:true}},
+        {company:{$type:"null"}}
+        ]
+}).project({name:1, company:1})
+```
+
+- উপরের উদাহরণে $and operator use করা হয়েছে
+- `$exists` দ্বারা query হয়েছে যাদের company field আছে
+- `$type` দ্বারা query হয়েছে যাদের company field এর value "null" অর্থাৎ value এর type check করা হয়েছে ।
+
+- simplified version only type search ⬇️
+
+```
+db.practice.find({
+    company:{$type:"null"}
+}).project({name:1, company:1})
+```
+
+```
+db.practice.find({
+    friends:{$type:"array"}
+})
+```
+
+- ⬆️ will show all the documents in collection practice which have a `friend field` and this `field` is an `array`
 
 ## 5-7 $all $elemMatch
 
