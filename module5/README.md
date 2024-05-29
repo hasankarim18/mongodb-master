@@ -528,16 +528,112 @@ db.practice.find({ $and: [{ age: { $gt: 18, $lt: 30 } }, { gender: "Male" }] }) 
 
 - ভেঙ্গে ভেঙ্গে লিখলে
 
+`implicit and` একই field দুই বার ব্যাবহার করা যাবেনা
+
 ```
 db.practice.find(
     {
-        $and: [
-            { age: { $gt: 18, $lt: 30 } },
+        age: { $gt: 18, $lt: 30 },                       // age field আগে এবং কমা দিয়ে দিয়ে implicit and
+        gender: "Male"                                   // gender আর একটা field
+    }
+)
+```
+
+```
+// explicit and এর জন্য
+db.practice.find(
+    {
+        $and: [                                          // explicit / logical and প্রথমেই  and oparator
+            { age: { $gt: 18, $lt: 30 } },               // array এর ভিতরে field সমূহ
             { gender: "Male" }
         ]
     }
 )
 ```
+
+- একই field দুইবার ব্যাবহার করা যাবে উপরের code কে নিচের মত করে লেখা যায়
+
+```
+db.practice.find(
+    {
+        $and: [
+            { age: { $gt: 18 } },                                 // age field প্রথম বার
+            { age: {$lt: 30 } },                                  // age field ২য় বার
+            { gender: "Male" }
+        ]
+    }
+)
+```
+
+- sort and project filter
+
+```
+db.practice.find(
+    {
+        $and: [
+            { age: { $gt: 18 } },
+            { age: { $lt: 30 } },
+            { gender: "Male" }
+        ]
+    }
+).project({ age: 1, gender: 1 })
+    .sort({ age: 1 })
+```
+
+# `$or`
+
+`db.inventory.find( { $or: [ { quantity: { $lt: 20 } }, { price: 10 } ] } )`
+
+- যেকোন condition সত্য হলেই আসবে
+
+```
+db.practice.find({
+    $or: [
+        {interests:"Cooking"},                            // interests হয় Gardening অথবা Cooking হবে
+        {interests:"Gardening"}
+        ]
+}).project({
+    interests:1
+})
+
+// or using $in comparison oparator
+
+db.practice.find({
+    $or: [
+        {interests:{$in:["Cooking", "Gardening"]}},
+        ]
+}).project({
+    interests:1
+})
+
+```
+
+### Array of object এর ভিতর query `explicit or`
+
+- এমন document গুলো চাই যাদের মধ্যে PYTHON অথবা JAVASCRIPT যেকোন একটি আছে
+
+```
+db.practice.find(
+    {
+        $or: [
+                {"skills.name":"JAVASCRIPT"},
+                {"skills.name":"PYTHON"},
+            ],
+
+    }
+    ).project({skills:1})
+```
+
+- উপরের code `implicit in` দিয়েও করা সম্ভব field এর নাম same হলে
+
+```
+db.practice.find(
+    {
+        "skills.name": { $in: ["JAVASCRIPT", "PYTHON"] }
+    }).project({ "skills.name": 1, "skills.level": 1 })
+```
+
+-
 
 ## 5-6 $exists, $type, $size
 
@@ -558,7 +654,7 @@ db.practice.find(
 <table>
     <tr>
         <th>
-            Purpose 
+            Purpose
         </th>
         <th>
             Command
@@ -628,3 +724,7 @@ db.practice.find(
   - mongosh
   - Write command as usuas on your terminal and use
   - You will not get suggestions here
+
+```
+
+```
