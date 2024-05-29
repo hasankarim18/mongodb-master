@@ -38,3 +38,16 @@ db.practice.find(
 )
     .sort({ age: 1 })
 ```
+
+- example for implicit `and ` in a same field
+
+```
+db.practice.find({age:{$ne:15, $lt:30 }})
+
+```
+
+- example for `implicit or` in same field and different field
+
+```
+db.practice.find({age:{$ne:15, $lt:30 }, gender:"Male"}).project({age:1, gender:1}).sort({age:1})
+```

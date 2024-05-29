@@ -316,7 +316,7 @@ N.b - `project` শুধু মাত্র `find` এর জন্য ব্�
          <li> goto Sidebar --> Reference --> Operators -->Query and Projection Operators </li>        
          <ul>
             <li>Comparison Operators --> $eq, $gt, $gte, $in, $lt, $lte, $ne, $nin </li>
-            <li>Logical query operators --> $and, $not, $nor, $or, </li>
+            <li>Logical query operators --> $and, $not, $nor, $or, (explicit operators) </li>
             <li>Element Query Operators --> $exists, $type, </li>
             <li>Evaluation Query Operators --> $expr, $jsonSchema, $mod, $regex, $text, $where</li>
             <li>Geospatial Query Operators --> $geoWithin, $center, $centerSphere, $box, $polygon, $geoIntersects, $geometry, $near, $minDistance, $maxDistance, $nearSphere, $geoWithinSphere</li>
@@ -490,6 +490,54 @@ db.practice.find(
 ```
 
 ## 5-5 $and $or implicit-vs-explicit
+
+- implicit `or, and` and explicit `or  + and`
+- find() এর ভিতর একই field ২ বার লেখা যাবেনা
+  `db.practice.find({age:{$ne:15 }, age:{$lt:50}})` // wrong approach
+- একই field এর ভিতর condition দিতে গেলে ওই field এর ভিতর ব্যাবহার করতে হবে এবং একই bracket এর ভিতর নিয়ে যেতে হবে
+
+- example for implicit `and ` in a same field
+
+```
+db.practice.find({age:{$ne:15, $lt:30 }})
+
+```
+
+- example for `implicit or` in same field and different field
+
+```
+db.practice.find({age:{$ne:15, $lt:30 }, gender:"Male"}).project({age:1, gender:1}).sort({age:1})
+```
+
+### # Mongodb Logical Operators are called `Explicit operators`
+
+# `$and` <br>
+
+`{ $and: [ { <expression1> }, { <expression2> } , ... , { <expressionN> } ] }`
+
+- comparison operator এর সময় আগে field তারপর second bracket দিয়ে operator
+- loggical operator এর সময় আগে operator তার পর field
+
+```
+db.practice.find({age:{$gt:15, $lt:30 }, gender:"Male"}) // implicit and
+
+
+db.practice.find({ $and: [{ age: { $gt: 18, $lt: 30 } }, { gender: "Male" }] }) // explicit and / logical and / logical oparator
+
+```
+
+- ভেঙ্গে ভেঙ্গে লিখলে
+
+```
+db.practice.find(
+    {
+        $and: [
+            { age: { $gt: 18, $lt: 30 } },
+            { gender: "Male" }
+        ]
+    }
+)
+```
 
 ## 5-6 $exists, $type, $size
 
