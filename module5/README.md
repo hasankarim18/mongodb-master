@@ -18,6 +18,8 @@
 
 `5-7:` [$all, $elemMatch](#5-7-all-elemmatch)
 
+#### [Update Mongo Db](#update-mongo-db)
+
 `5-8:` [$set, $addToSet, $push](#5-8-set-addtoset-push)
 
 `5-9:` [$unset, $pop, $pull, $pullAll](#5-9-unset-pop-pull-pullall)
@@ -768,6 +770,113 @@ db.practice.find({
 ```
 
 ## 5-7 $all $elemMatch
+
+- আমরা জানব
+  - `array qurey`
+  - `object query`
+  - `array of object query`
+
+⭐ Array query <br>
+
+- ⬇️ এখানে interrests field ‍array এর ভিতরে search করবে এবং interests:[..] field array এর যেকোন element "Cooking" হলেই সেই document কে দেখাবে
+
+```
+db.practice.find({
+    interests:"Cooking"
+}).project({interests:1})
+```
+
+- ⬆️ উপরের query কে নিচের ⬇️ মত `$in` operator দিয়েও করা যায়
+
+```
+db.practice.find({
+    interests:{$in:["Cooking"]}
+}).project({interests:1})
+```
+
+- ⭐ array position হিসাব করে আমরা data বের করতে চাই
+- দর ২ নম্বর index এ “cooking” আছে এমন data বের করতে চাই
+
+```
+db.practice.find({
+    "interests.2":{$in:["Cooking"]}
+}).project({interests:1})
+```
+
+or
+
+```
+db.practice.find({
+    "interests.2":"Cooking"
+}).project({interests:1})
+```
+
+### exactly match search in array
+
+```
+db.practice.find({
+    "interests":[ "Cooking", "Writing", "Reading" ]
+}).project({
+    interests:1
+})
+```
+
+- ⬆️ same to same array will be matched and same array with same index position will be returned.
+
+# `$all`
+
+- যেকোন position এই থাকুক না কেন element গুলো থাকলেই হবে
+
+`{ <field>: { $all: [ <value1> , <value2> ... ] } }`
+
+```
+db.practice.find({
+    "interests": {$all: [ "Cooking", "Writing", "Reading" ]}
+}).project({
+    interests:1
+})
+```
+
+- এটা exact match করবেনা শুধু মা element গুলো থাকলেই হবে
+
+### query in `array of object` like array
+
+```
+db.practice.find({
+    "skills.name":"JAVASCRIPT"
+}).project({
+    skills:1
+})
+```
+
+### exact match query in `array of object`
+
+```
+db.practice.find({
+    skills:{
+        name:'JAVASCRIPT',
+        level:"Expert",
+        isLearning:false
+    }
+}).project({
+    skills:1
+})
+```
+
+# `$elemMatch`
+
+- `এখন আমরা চাই element match করুক exact match না করুক `
+- আমরা namme:"JAVASCRIPT" ও level:"Expert" চাই কিন্তু inLearning true / false হতে পারে
+
+```
+db.practice.find({
+    skills:{$elemMatch:{name:"JAVASCRIPT", level:"Expert"}}
+}).project({
+    skills:1
+})
+```
+
+# Update Mongo Db
 
 ## 5-8 $set $addToSet $push
 
