@@ -880,6 +880,111 @@ db.practice.find({
 
 ## 5-8 $set $addToSet $push
 
+### `$set` --> update primitive value
+
+### `$addToSet` --> update array but `do not allow` duplicate value
+
+### `$push` --> update array but `allow` duplicate value
+
+# `$set` popular update operator
+
+- কাকে অর্থৎ কোন document কে update করব
+- $set -- কোন কোন field update করব // কি আপডেট করব
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000065")}, // যে document কে update করা হবে
+    {
+        $set:{                                      // $set --> takes object
+            age:100                                // field: updated_value
+        }
+   }
+)
+
+```
+
+- field যদি object হয়ে থাকে
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000065")},
+    {
+        $set:{
+            age:100,
+            "name.firstName":"Hasan Mahbub"             // field property dobule quatation
+                                                        // দিয়ে access করতে হবে
+        }
+    }
+    )
+```
+
+- Primitive value এর জন্য $set কোন প্রবলেম নয়
+
+- but for non-primitive value $set will replace the previous value and rewrite new value
+
+- for non-primitive, if data is entirely replaced by new data you can use `$set`, otherwise user other operators like `$addToSet`
+
+# `$addToSet` --
+
+- The $addToSet operator adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array.
+- `$addToSet` operator array তে নতুন value add করে, যদি আগে সেই value থেকে থাকে তাহলে `$addToSet` কোন change করবেনা ।
+- Array এর ভিতর set করে দিবে কিন্তু duplicate value আসবেনা
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000065")},
+    {
+        $set:{
+            age:80,
+            "name.firstName":"Hasan Mahbub",
+        },
+        $addToSet: {
+            interests:"Gamming"
+        }
+    }
+    )
+```
+
+- before update: interest:["Cooking","Reading", "Writting"]
+- after update: interest:["Cooking","Reading", "Writting", "Gamming"]
+
+- `$each` modifire
+- একের অধিক value সেট করতে হলে `$each` modifire use করতে হবে
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000065")},
+    {
+        $set:{
+            age:80,
+            "name.firstName":"Hasan Mahbub",
+        },
+        $addToSet: {
+            interests:{$each:["Gamming", "Travelling", "Swimming"]}
+        }
+    }
+    )
+```
+
+# `$push`
+
+- `$addToSet` এর মতই কিন্তু duplicate value allow করবে আর `$addToSet` কখনই duplicate value এলাও করবেনা ।
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000065")},
+    {
+        $set:{
+            age:80,
+            "name.firstName":"Hasan Mahbub",
+        },
+        $addToSet: {
+            interests:{$each:["Gamming", "Travelling", "Swimming"]}
+        }
+    }
+    )
+```
+
 ## 5-9 $unset $pop $pull $pullall
 
 ## 5-10 More about $set, how to explore documentation
@@ -963,6 +1068,10 @@ db.practice.find({
   - mongosh
   - Write command as usuas on your terminal and use
   - You will not get suggestions here
+
+```
+
+```
 
 ```
 
