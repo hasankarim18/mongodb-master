@@ -985,9 +985,78 @@ db.practice.updateOne(
     )
 ```
 
-## 5-9 $unset $pop $pull $pullall
+# Delete Mongo Db
+
+## 5-9 $unset $pop $pull $pullAll
+
+#### `$unset` ---> deletes a perticular field
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000065")},
+    {
+      $unset:{birthday:""}               // birthday field will be removed
+    }
+    )
+
+```
+
+#### `$pop` ---> remove first or last element of an array <br>
+
+      `{ $pop: { <field>: <-1 | 1>, ... } }` 1 == last element <br/>
+      `{ $pop: { <field>: <-1 | 1>, ... } }` -1 == first element <br/>
+
+#### `$pull` ---> remove first or last element of an array
+
+#### `$pullAll` ---> remove first or last element of an array
 
 ## 5-10 More about $set, how to explore documentation
+
+- $set in `object`
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000066")},
+    {
+      $set:{
+          "address.city":"Dhaka123"                      // object এর ভিতরের property change
+      }
+    }
+    )
+
+```
+
+- Updating multiple objects
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000066")},
+    {
+      $set:{
+          "address.city":"Dhaka123",
+          "address.country":"Bangladesh123",
+          "address.postCode":"1200",
+          "address.postalCode":7600
+      }
+    }
+    )
+```
+
+- Updating `Array of Objects`
+
+```
+db.practice.updateOne(
+    {"_id" : ObjectId("6406ad63fc13ae5a40000066"), "education.major":"History"},
+    {
+      $set:{
+          "education.$.major":"Cse"
+      }
+    }
+    )
+
+```
+
+- `$` signifies first property matched
 
 ## 5-11 delete documents, drop collection and how to explore by yoursef
 
