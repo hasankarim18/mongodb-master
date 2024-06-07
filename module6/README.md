@@ -58,6 +58,8 @@ db.collection.aggregate(
 
 # `6-1` $match, $project aggregation peoject
 
+- project
+
 # `6-2` $addFields, $out, $merge aggregation stage
 
 # `6-3` $group, $sum, $push agrregation stage
