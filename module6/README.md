@@ -22,6 +22,8 @@
 
 `6-11:` [Practice Task-2](#6-11-practice-task-2)
 
+`6-12:` [Resources Links](#6-12-resources-links)
+
 # `6-0` Intro to aggregation
 
 #### # What is aggregation?
@@ -196,3 +198,7 @@ db.practice.aggregate(
 # `6-10` Explore compound index and text index
 
 # `6-11` Practice Task-2
+
+# `6-12` Resources Links
+
+- <a target="_blank" href="https://studio3t.com/knowledge-base/articles/mongodb-aggregation-framework/">The Beginner’s Guide to MongoDB Aggregation (With Exercise)</a>
