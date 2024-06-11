@@ -179,7 +179,37 @@ db.practice.aggregate(
 
 - stage -- 2 এ `$project` এর মাধ্যমে document থেকে field filtering অর্থাৎ যেসকল ফিল্ড আমার দরকার তাদের রাখা হয়েছে এবং বাকিদের বাদ দেয়া হয়েছে ।
 
+- একই oparator একের বেশিবার ব্যাবহার করা যাবে কিন্তু target হব যত স্টেপ কম হবে তত দ্রুত কোয়েরি হবে ।
+
+```
+ // not recomended
+db.practice.aggregate(
+    [
+         { $match: { gender: "Male" } },
+         {$match:{age:{$lt:30}}},
+        { $project: { name: 1, gender: 1 } },
+
+    ]
+)
+```
+
 # `6-2` $addFields, $out, $merge aggregation stage
+
+### `$addFields`: it is possible that you need to make some changes to your output in the way of new fields.
+
+- অর্থাৎ আমরা নতুন field যোগ করতে পারব ।
+
+```
+db.practice.aggregate(
+    [
+        { $match: { gender: "Male", age: { $lt: 30, $gt:18 } } },
+        {$addFields: {isMarriageReady:"Yes marrige ready", isMale:true}},
+        { $project: { name: 1, gender: 1, isMarriageReady:1, isMale:1 } },
+    ]
+)
+```
+
+- ⬆️ উপরে থেকে আমরা দেখতে পাচ্ছি `$addFields` এর মাধ্যমে আমরা নতুন দুইটা field যোগ করা হয়েছে `isMarriageReady`, `isMale` , এগুলো মূল database, এ ছিলনা যা পরে যোগ করা হয়েছে
 
 # `6-3` $group, $sum, $push agrregation stage
 
