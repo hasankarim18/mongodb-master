@@ -210,6 +210,56 @@ db.practice.aggregate(
 ```
 
 - ⬆️ উপরে থেকে আমরা দেখতে পাচ্ছি `$addFields` এর মাধ্যমে আমরা নতুন দুইটা field যোগ করা হয়েছে `isMarriageReady`, `isMale` , এগুলো মূল database, এ ছিলনা যা পরে যোগ করা হয়েছে
+- `$addField` original collection কে মডিফাই করেনা
+
+### `$out`
+
+- This is an unusal types of statge because it allows you to carry the result of your aggregation over into a new collection, or into an existing one after droping it, or even adding them to the existing documents.
+
+- `$out must be the last stage in the pipeline`
+
+- অর্থৎ agrregation এর অন্যান্য process complete করার পর যে ডাটা আসবে সেই ডাটা কে ডাটাবেস এর অন্য একটা কালেকশন এ সেভ করবে ।
+
+```
+db.users.aggregate(
+    [
+        { $match: { gender: "Male", age: { $lt: 30, $gt:18 } } },
+        {$addFields: {isMarriageReady:"Yes marrige ready", isMale:true}},
+        { $project: { name: 1, gender: 1, isMarriageReady:1, isMale:true, ifFemale:1 } },
+        {$out:"marrige-ready-guys"},
+    ]
+)
+```
+
+- ⬆️ উপরের কোড থেকে `$out` এর মাধ্যমে একই ডাটাবেস এ নতুন একটা কালেকশন তৈরি হবে যার নাম হবে `marrige-ready-guys` এবং এই কালেকশনে `$project` Stage এর পরে যেসব ডাটা থাকবে শুধু তদের নিয়ে গঠিত হবে
+- অর্থৎ
+
+- ⬇️ smaple data (array of objects)
+
+- ⬆️
+  - `$match` প্রথমে `user` database থেকে data collect করবে
+  - `$addFields` নতুন field add করা হয়েছে
+  - `$project` দ্বারা প্রয়োজনীয় ডাটা প্রজেক্ট করা হয়েছে
+  - `$out` দ্বারা একই ডাটাবেস নতুন একটা `marriage-ready-guys` কালেকশন তৈরি করবে এবং `project` কৃত ডাটা সমূহ এই কালেকশনে সেভ করবে ।
+
+```
+[
+
+{---},
+{
+	"_id" : ObjectId("6406ad64fc13ae5a4000006f"),
+	"name" : {
+		"firstName" : "Rudolf",
+		"lastName" : "Seres"
+	},
+	"gender" : "Male",
+	"isMarriageReady" : "Yes marrige ready",
+	"isMale" : true
+},
+{---},
+
+]
+```
 
 # `6-3` $group, $sum, $push agrregation stage
 
