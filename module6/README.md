@@ -240,7 +240,7 @@ db.users.aggregate(
   - `$match` প্রথমে `user` database থেকে data collect করবে
   - `$addFields` নতুন field add করা হয়েছে
   - `$project` দ্বারা প্রয়োজনীয় ডাটা প্রজেক্ট করা হয়েছে
-  - `$out` দ্বারা একই ডাটাবেস নতুন একটা `marriage-ready-guys` কালেকশন তৈরি করবে এবং `project` কৃত ডাটা সমূহ এই কালেকশনে সেভ করবে ।
+  - `$out` দ্বারা একই ডাটাবেস নতুন একটা `marriage-ready-guys` কালেকশন তৈরি করবে এবং `project` কৃত ডাটা সমূহ এই কালেকশনে সেভ করবে । ⬇️
 
 ```
 [
@@ -260,6 +260,22 @@ db.users.aggregate(
 
 ]
 ```
+
+### `$merge` --> existing document এর সাথে merge করতে চাইলে।
+
+- আগের document রাখবে নতুন document ও রাখবে ।
+
+```
+db.users.aggregate(
+    [
+        { $match: { gender: "Male", age: { $lt: 30, $gt:18 } } },
+        {$addFields: {isMarriageReady:"Yes marrige ready", isMale:true}},
+        {$merge:"users"},
+    ]
+)
+```
+
+- `$merge:"collectionName"`
 
 # `6-3` $group, $sum, $push agrregation stage
 
