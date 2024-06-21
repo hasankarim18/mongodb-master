@@ -297,6 +297,179 @@ db.practice.aggregate(
 
 ```
 
+- `field` গুলাকে রেফার করার জন্য `$` sign use করতে হয়
+
+### `$sum` - কয়টা গ্রুপ আছে । accumulator oparator
+
+```
+db.practice.aggregate(
+    [
+       // Stage -1
+       {$group:{
+           "_id":"$age", count:{$sum:1}
+       }}
+    ]
+)
+```
+
+- কোন $group এ কয়টা document আছে সেটা দেখাবে ⬇️
+
+```
+[
+    ---,
+    ---,
+{
+	"_id" : 27,
+	"count" : 2
+},
+{
+	"_id" : 7,
+	"count" : 3
+},
+{
+	"_id" : 82,
+	"count" : 1
+},
+    ---,
+    ---
+]
+```
+
+- ⬆️ এ বোঝা যাচ্ছে 27 বছরের 2 জন আছে
+
+- ⬆️ এ বোঝা যাচ্ছে 7 বছরের 3 জন আছে
+
+- ⬆️ এ বোঝা যাচ্ছে 82 বছরের 1 জন আছে
+
+- এভাবে বয়স অনুযায়ী গ্রুপে ভাগ করা হয়েছে ।
+
+### Object এর ভিতর থেকে field নিয়েও করতে পারব ।
+
+```
+db.practice.aggregate(
+    [
+       // Stage -1
+       {$group:{
+           "_id":"$address.country",
+       }}
+    ]
+)
+```
+
+- এখানে country, address object এর ভিতর আছে ।
+
+### `$push` -- add extra value to the resulting document এই সব ভ্যালু আমরা নিজেরাও দিতে পারি অথবা `$` sign use করে document থেকে রেফার করে দেখাতে পারি ।
+
+```
+db.practice.aggregate(
+    [
+       // Stage -1
+       {$group:{
+           "_id":"$address.country",count:{$sum:1}, showName: {$push:"$name" }
+       }}
+    ]
+)
+```
+
+- showName এ আমরা `$push` করেছি `$name`
+- প্রথেমে country অনুযায়ী গ্রুপ হবে তারপর
+- `count`, কোন এ `$sum` , কোন গ্রুপে কতজন আছে তা দেখাবে
+- `showName` এ `$push` ব্যাবহারের কারনে array of object এর ভিতরে কোন country তে কত জন আছে তাদের name দেখাবে
+
+```
+---,
+---,
+{
+	"_id" : "Bahamas",
+	"count" : 1,
+	"showName" : [
+		{
+			"firstName" : "Elmira",
+			"lastName" : "Tash"
+		}
+	]
+},
+---,
+{
+	"_id" : "Peru",
+	"count" : 4,
+	"showName" : [
+		{
+			"firstName" : "Clotilda",
+			"lastName" : "Pinckard"
+		},
+		{
+			"firstName" : "Cacilie",
+			"lastName" : "Boyack"
+		},
+		{
+			"firstName" : "Lindy",
+			"lastName" : "Shireff"
+		},
+		{
+			"firstName" : "Galvan",
+			"lastName" : "Clute"
+		}
+	]
+},
+---,
+---,
+---
+```
+
+### # যদি সব document দরকার হয় তাহলে `{$push:"$$ROOT"}`
+
+```
+db.practice.aggregate(
+    [
+       // Stage -1
+       {$group:{
+           "_id":"$address.country",count:{$sum:1}, data: {$push:"$$ROOT" }
+       }}
+    ]
+)
+```
+
+### # যদি specific field দরকার হয় তাহলে
+
+```
+db.practice.aggregate(
+    [
+       // Stage -1
+       {$group:{
+           "_id":"$address.country",count:{$sum:1}, showNameAndGender: {$push:{name:"$name", gender:"$gender"} }
+       }}
+    ]
+)
+```
+
+- `$push` একট object নিবে এবং সেখানে field এর নাম দিয়ে reference করতে হবে
+
+### # আবার চাইলে `$project` করতে পারি
+
+```
+db.practice.aggregate(
+    [
+        // Stage -1
+        {
+            $group: {
+                "_id": "$address.country", count: { $sum: 1 }, data: { $push: "$$ROOT" }
+            }
+        },
+        {
+            $project: {
+                "data.name": 1,
+                "data.address.country":1
+            }
+
+        }
+    ]
+)
+```
+
+- ⬆️ কোড হতে `data` এর মধ্যে সব ডাটা আসবে এবং `$project` এর মাধ্যমে প্রয়জনীয় ডাটা দেখাতে হবে
+- `data.name` এবং `data.address.country` লেখা হয়েছে কারন আগের stage এ সকল document, `data` এর ভিতর রাখা হয়েছে
+
 # `6-4` explore more about $group and $project
 
 # `6-5` explore $group with $unwind agrregation stage
