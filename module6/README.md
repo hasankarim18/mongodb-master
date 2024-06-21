@@ -279,6 +279,24 @@ db.users.aggregate(
 
 # `6-3` $group, $sum, $push agrregation stage
 
+### `$group`:
+
+- The `group` stage separates documents into groups according to a `group key`. The output is one document for each unique group key
+
+- A group key is often a `field`, or group of `fields`. The group key can also be the result of an expression. Use the \_id field in the $group pipeline stage to set the group key.
+
+```
+db.practice.aggregate(
+    [
+       // Stage -1
+       {$group:{
+           "_id":"$gender",
+       }}
+    ]
+)
+
+```
+
 # `6-4` explore more about $group and $project
 
 # `6-5` explore $group with $unwind agrregation stage
